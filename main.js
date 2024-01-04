@@ -6,7 +6,6 @@ const {generateSilenceMp3} = require("./scripts/generate-silence-mp3");
 const {mergeAudios} = require("./scripts/merge-audios");
 const {getDuration} = require("./scripts/get-duration");
 const {getArticleFilePath} = require("./scripts/get-article-file-path");
-const {DB_VIDEO, DIST_FOLDER} = require("./constants");
 const {copyFile} = require("./scripts/copy-file");
 const {checkIsAudioInVideoFile} = require("./scripts/check-is-audio-in-video-file");
 const {removeAudioFromVideo} = require("./scripts/remove-audio-from-video");
@@ -17,11 +16,13 @@ const {addVideoToVideoMergeList} = require("./scripts/add-video-to-video-merge-l
 const {mergeVideos} = require("./scripts/merge-videos");
 const {mergeVideoAndAudio} = require("./scripts/merge-video-and-audio");
 const {resetDistFolder} = require("./scripts/reset-dist-folder");
+const {getNameFromPath} = require("./scripts/get-name-from-path");
+const {DB_VIDEO, DIST_FOLDER} = require("./constants");
 
-resetDistFolder();
+const url = 'api/articles/url?url=angular/micro-and-macro-tasks/vvedenie_eng';
 
 async function runAudio() {
-    const items = await filterMediaObjects();
+    const items = await filterMediaObjects(url);
 
     for (let i = 0; i < items.length; i++) {
         // console.log(`Обработка элемента ${i + 1} из ${items.length}`);
@@ -45,7 +46,7 @@ async function runAudio() {
 
             if (item.data.pauseBeforePlay) {
                 console.log(`Generate silence.mp3 for ${item.data.pauseBeforePlay} seconds`,
-                    audioFilePath.split('/').pop());
+                    getNameFromPath(audioFilePath));
                 const name = await generateSilenceMp3(item.data.pauseBeforePlay);
                 await addAudioToAudioMergeList(name, false, audioFileDuration);
             }
@@ -58,7 +59,7 @@ async function runAudio() {
 }
 
 async function runVideo() {
-    const items = await filterMediaObjects();
+    const items = await filterMediaObjects(url);
 
     const ar = [];
     let index = 0;
@@ -96,6 +97,7 @@ async function runVideo() {
                 ar[index].audioDuration += audioFileDuration;
                 continue;
             } else {
+                ar[index].audioDuration += item.data.pauseBeforePlay || 0;
                 ar[index].audioDuration += item.data.pauseBeforePlayVideo || 0;
             }
 
@@ -109,20 +111,19 @@ async function runVideo() {
         }
     }
 
-    console.log(ar);
-
     if (ar.find(i => !i.audioDuration)) {
         throw new Error("Не должно быть аудио с длительностью о или false, или null и тд");
     }
 
     for (let i = 0; i < ar.length; i++) {
         const calculation = ar[i];
+        console.log('\n=====================================')
+        console.log(calculation);
 
         // Copy video file into assets folder
-        const fileName = calculation.videoPath.split('/').pop();
+        const fileName = getNameFromPath(calculation.videoPath);
         const filePath = `${DIST_FOLDER}/${fileName}`;
         await copyFile(calculation.videoPath, filePath);
-        await addVideoToVideoMergeList(filePath);
 
         if (calculation.muteAudio) { // video muted
             if (await checkIsAudioInVideoFile(filePath)) {
@@ -137,15 +138,17 @@ async function runVideo() {
         const videoDuration = await getDuration(filePath);
         const lastIteration = i === ar.length - 1;
 
-        if (videoDuration < calculation.audioDuration) {
-            const videoPath = await generateVideoFromLastFrame(filePath, calculation.audioDuration - videoDuration);
-            console.log('Add frozen video, duration: ', await getDuration(videoPath));
-            await addVideoToVideoMergeList(videoPath);
-        } else if (videoDuration > calculation.audioDuration && !lastIteration) {
+        if (videoDuration > calculation.audioDuration && !lastIteration) {
             await cutVideo(filePath, videoDuration, videoDuration - (videoDuration - calculation.audioDuration));
         }
+        await addVideoToVideoMergeList(filePath);
 
-        console.log('Add video, duration: ', await getDuration(filePath));
+        if (videoDuration < calculation.audioDuration) {
+            const videoPath = await generateVideoFromLastFrame(filePath, calculation.audioDuration - videoDuration);
+            console.log(`[${videoPath}] Add frozen video, duration: `, await getDuration(videoPath));
+            await addVideoToVideoMergeList(videoPath);
+        }
+
         console.log();
     }
 
@@ -153,6 +156,7 @@ async function runVideo() {
 }
 
 (async () => {
+    resetDistFolder();
     await runAudio();
     await runVideo();
     await mergeVideoAndAudio();

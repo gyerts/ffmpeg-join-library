@@ -1,28 +1,22 @@
 const { join } = require('path');
 
-const FF_MPEG = './scripts/ffmpeg -y';
-const FF_PROBE = './scripts/ffprobe';
+const FF_MPEG = `${join('scripts', 'ffmpeg')} -y`;
+const FF_PROBE = join('scripts', 'ffprobe');
 const DB_PATH = '/Users/gyerts/WebstormProjects/libraries/holy-editor/database-backup';
 const DB_AUDIO = join(DB_PATH, 'uploaded-audios');
 const DB_VIDEO = join(DB_PATH, 'uploaded-videos');
-const DIST_FOLDER = './dist';
+const OUT_FOLDER = join('out');
+const DIST_FOLDER = join(OUT_FOLDER, 'artifacts');
 let globalVideoCreated = false;
 
-const MAIN_AUDIO_PATH = `${DIST_FOLDER}/main-audio.wav`;
-const MERGE_AUDIO_PATH = `${DIST_FOLDER}/audio-merge.txt`;
+const MAIN_AUDIO_PATH = join(DIST_FOLDER, 'main-audio.wav');
+const MERGE_AUDIO_PATH = join(DIST_FOLDER, 'audio-merge.txt');
 
-const MAIN_VIDEO_PATH = `${DIST_FOLDER}/main-video.mp4`;
-const MERGE_VIDEO_PATH = `${DIST_FOLDER}/video-merge.txt`;
+const MAIN_VIDEO_PATH = join(DIST_FOLDER, 'main-video.mp4');
+const MERGE_VIDEO_PATH = join(DIST_FOLDER, 'video-merge.txt');
 const resolution = '3024:1888';
 
-// Только одно видео может быть активно в момент калькуляций какое аудио куда вставлять,
-// для одного видео может быть выполнено слияние одного или нескольких аудио.
-// Потому мы запоминаем с каким видео мы работаем, для того чтобы ссылаться на него позднее.
-const GLOBAL_VIDEO_PATH = 'output.mov';
-
-// Этот путь будет использован для перезаписи видео из `GLOBAL_VIDEO_PATH`,
-// в `TEMP_VIDEO_PATH` будут лежать все промежуточные версии `GLOBAL_VIDEO_PATH`.
-const TEMP_VIDEO_PATH = 'temp-output.mov';
+const MAIN_VIDEO_NAME = join(OUT_FOLDER, 'output.mp4');
 
 const mediaObjects = [
     'generate-audio-revoicer',
@@ -37,9 +31,9 @@ exports.DB_PATH = DB_PATH;
 exports.DB_AUDIO = DB_AUDIO;
 exports.DB_VIDEO = DB_VIDEO;
 exports.DIST_FOLDER = DIST_FOLDER;
+exports.OUT_FOLDER = OUT_FOLDER;
 exports.globalVideoCreated = globalVideoCreated;
-exports.GLOBAL_VIDEO_PATH = GLOBAL_VIDEO_PATH;
-exports.TEMP_VIDEO_PATH = TEMP_VIDEO_PATH;
+exports.MAIN_VIDEO_NAME = MAIN_VIDEO_NAME;
 exports.MAIN_AUDIO_PATH = MAIN_AUDIO_PATH;
 exports.MERGE_AUDIO_PATH = MERGE_AUDIO_PATH;
 exports.MAIN_VIDEO_PATH = MAIN_VIDEO_PATH;

@@ -1,9 +1,10 @@
+const { join } = require('path');
 const {FF_MPEG, DIST_FOLDER, VideoFiles, MAIN_VIDEO_PATH} = require("../constants");
 const {executeCmd} = require("./execute-cmd");
 
 async function mergeVideos() {
     console.log('Merge videos!', VideoFiles);
-    const args1 = VideoFiles.map(i => `-i ${DIST_FOLDER}/${i}`)
+    const args1 = VideoFiles.map(i => `-i ${join(DIST_FOLDER, i)}`)
     const args2 = VideoFiles.map((i, index) => `[${index}:v]`)
 
     const concatCMD = `${FF_MPEG} ${args1.join(' ')} -filter_complex "${args2.join('')}concat=n=${VideoFiles.length}:v=1:a=0" -r 30 ${MAIN_VIDEO_PATH}`;

@@ -1,15 +1,17 @@
+const { join, sep } = require('path');
 const {FF_MPEG, resolution, DIST_FOLDER} = require("../constants");
 const {executeCmd} = require("./execute-cmd");
 const {getVideoResolution} = require("./get-video-resolution");
+const {getNameFromPath} = require("./get-name-from-path");
 
 async function fixVideo(filePath) {
     const videoResolution = await getVideoResolution(filePath);
 
     if (videoResolution !== resolution) {
-        console.log(`Fix video ${filePath}, video(${videoResolution}) !== required(${resolution})`);
-        const fixedFilename = `fixed-${filePath.split('/').pop()}`;
-        const fixedFilepath = `${DIST_FOLDER}/${fixedFilename}`;
-        const fixVideoCMD = `${FF_MPEG} -i ${filePath} -vf "scale=${resolution},setsar=1:1" -c:v libx265 -c:a aac -strict experimental ${fixedFilepath}`;
+        const fixedFilename = `fixed-${getNameFromPath(filePath)}`;
+        const fixedFilepath = join(DIST_FOLDER, fixedFilename);
+        console.log(`[${filePath}] Fix video, video(${videoResolution}) !== required(${resolution}) [${fixedFilepath}]`);
+        const fixVideoCMD = `${FF_MPEG} -i ${filePath} -vf "scale=${resolution},setsar=1:1" -c:v libx264 -c:a aac -strict experimental ${fixedFilepath}`;
         await executeCmd(fixVideoCMD);
         return fixedFilepath;
     }

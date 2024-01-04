@@ -1,11 +1,14 @@
+const { sep } = require('path');
 const {DIST_FOLDER, VideoFiles} = require("../constants");
 const {fixVideo} = require("./fix-video");
+const {getDuration} = require("./get-duration");
 
 async function addVideoToVideoMergeList(filePath) {
     const fixedFilePath = await fixVideo(filePath);
 
-    const safeFilePath = fixedFilePath.replace(`${DIST_FOLDER}/`, '');
+    const safeFilePath = fixedFilePath.replace(`${DIST_FOLDER}${sep}`, '');
     VideoFiles.push(safeFilePath);
+    console.log(`[${fixedFilePath}] Add video, duration: `, await getDuration(fixedFilePath));
 }
 
 exports.addVideoToVideoMergeList = addVideoToVideoMergeList;

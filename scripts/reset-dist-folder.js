@@ -1,8 +1,16 @@
 const fs = require('fs');
-const {DIST_FOLDER} = require("../constants");
+const {DIST_FOLDER, OUT_FOLDER} = require("../constants");
 
 function resetDistFolder() {
-    fs.rmSync(DIST_FOLDER, { recursive: true });
+    try {
+        fs.rmSync(DIST_FOLDER, { recursive: true });
+    } catch {
+    }
+
+    try {
+        fs.mkdirSync(OUT_FOLDER);
+    } catch {}
+
     fs.mkdirSync(DIST_FOLDER);
 }
 
