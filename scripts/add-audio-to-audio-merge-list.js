@@ -1,4 +1,4 @@
-const {MERGE_AUDIO_PATH, ASSETS_FOLDER} = require("./constants");
+const {MERGE_AUDIO_PATH, DIST_FOLDER} = require("../constants");
 const {executeCmd} = require("./execute-cmd");
 const {fixAudio} = require("./fix-audio");
 const {getDuration} = require("./get-duration");
@@ -10,7 +10,7 @@ async function addAudioToAudioMergeList(filePath, hasOwnVideo, duration) {
 
     const beforeDuration = await getDuration(filePath);
     const finalFilename = await fixAudio(filePath, fileName, duration);
-    const afterDuration = await getDuration(`${ASSETS_FOLDER}/${finalFilename}`);
+    const afterDuration = await getDuration(`${DIST_FOLDER}/${finalFilename}`);
 
     console.log('Add fixed audio', fileName, `with duration (${duration})`, beforeDuration, '->', afterDuration, 'has own video', hasOwnVideo);
 

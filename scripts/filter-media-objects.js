@@ -1,4 +1,4 @@
-const {mediaObjects} = require("./constants");
+const {mediaObjects} = require("../constants");
 const {getArticle} = require("./get-article");
 
 async function filterMediaObjects() {

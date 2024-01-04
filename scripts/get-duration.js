@@ -1,4 +1,4 @@
-const {FF_PROBE} = require("./constants");
+const {FF_PROBE} = require("../constants");
 const exec = require('child_process').exec;
 
 function getDuration(fileName) {

@@ -1,5 +1,5 @@
 const {executeCmd} = require("./execute-cmd");
-const {FF_PROBE} = require("./constants");
+const {FF_PROBE} = require("../constants");
 
 async function getVideoResolution(filePath) {
     const output = await executeCmd(

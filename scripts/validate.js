@@ -1,4 +1,4 @@
-const {mediaObjects} = require("./constants");
+const {mediaObjects} = require("../constants");
 
 function validate(i, item, nextItem) {
     if (i === 0 && nextItem.componentType !== 'video') {

@@ -1,12 +1,12 @@
 const {executeCmd} = require("./execute-cmd");
-const {FF_MPEG, FF_PROBE, ASSETS_FOLDER} = require("./constants");
+const {FF_MPEG, FF_PROBE, DIST_FOLDER} = require("../constants");
 const {removeFile} = require("./remove-file");
 const {getVideoResolution} = require("./get-video-resolution");
 
 async function generateVideoFromLastFrame(filePath, duration) {
     const fileName = filePath.split('/').pop();
-    const frameVideoName = `${ASSETS_FOLDER}/last-frame-${fileName}`;
-    const frameName = `${ASSETS_FOLDER}/last-frame-${fileName}.png`.replace(
+    const frameVideoName = `${DIST_FOLDER}/last-frame-${fileName}`;
+    const frameName = `${DIST_FOLDER}/last-frame-${fileName}.png`.replace(
         `.${frameVideoName.split('.').pop()}`,
         '',
     );

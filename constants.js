@@ -5,14 +5,14 @@ const FF_PROBE = './scripts/ffprobe';
 const DB_PATH = '/Users/gyerts/WebstormProjects/libraries/holy-editor/database-backup';
 const DB_AUDIO = join(DB_PATH, 'uploaded-audios');
 const DB_VIDEO = join(DB_PATH, 'uploaded-videos');
-const ASSETS_FOLDER = './assets';
+const DIST_FOLDER = './dist';
 let globalVideoCreated = false;
 
-const MAIN_AUDIO_PATH = `${ASSETS_FOLDER}/main-audio.wav`;
-const MERGE_AUDIO_PATH = `${ASSETS_FOLDER}/audio-merge.txt`;
+const MAIN_AUDIO_PATH = `${DIST_FOLDER}/main-audio.wav`;
+const MERGE_AUDIO_PATH = `${DIST_FOLDER}/audio-merge.txt`;
 
-const MAIN_VIDEO_PATH = `${ASSETS_FOLDER}/main-video.mp4`;
-const MERGE_VIDEO_PATH = `${ASSETS_FOLDER}/video-merge.txt`;
+const MAIN_VIDEO_PATH = `${DIST_FOLDER}/main-video.mp4`;
+const MERGE_VIDEO_PATH = `${DIST_FOLDER}/video-merge.txt`;
 const resolution = '3024:1888';
 
 // Только одно видео может быть активно в момент калькуляций какое аудио куда вставлять,
@@ -36,7 +36,7 @@ exports.FF_PROBE = FF_PROBE;
 exports.DB_PATH = DB_PATH;
 exports.DB_AUDIO = DB_AUDIO;
 exports.DB_VIDEO = DB_VIDEO;
-exports.ASSETS_FOLDER = ASSETS_FOLDER;
+exports.DIST_FOLDER = DIST_FOLDER;
 exports.globalVideoCreated = globalVideoCreated;
 exports.GLOBAL_VIDEO_PATH = GLOBAL_VIDEO_PATH;
 exports.TEMP_VIDEO_PATH = TEMP_VIDEO_PATH;

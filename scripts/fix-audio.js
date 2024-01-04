@@ -1,9 +1,9 @@
-const {FF_MPEG, ASSETS_FOLDER} = require("./constants");
+const {FF_MPEG, DIST_FOLDER} = require("../constants");
 const {executeCmd} = require("./execute-cmd");
 
 async function fixAudio(filePath, fileName, duration) {
     const fixedFilename = `fixed-${fileName}.wav`;
-    const fixAudioCMD = `${FF_MPEG} -i ${filePath} -t ${duration} -ar 44100 -ac 2 ${ASSETS_FOLDER}/${fixedFilename}`;
+    const fixAudioCMD = `${FF_MPEG} -i ${filePath} -t ${duration} -ar 44100 -ac 2 ${DIST_FOLDER}/${fixedFilename}`;
     await executeCmd(fixAudioCMD);
     return fixedFilename;
 }

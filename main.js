@@ -6,7 +6,7 @@ const {generateSilenceMp3} = require("./scripts/generate-silence-mp3");
 const {mergeAudios} = require("./scripts/merge-audios");
 const {getDuration} = require("./scripts/get-duration");
 const {getArticleFilePath} = require("./scripts/get-article-file-path");
-const {DB_VIDEO, ASSETS_FOLDER} = require("./scripts/constants");
+const {DB_VIDEO, DIST_FOLDER} = require("./constants");
 const {copyFile} = require("./scripts/copy-file");
 const {checkIsAudioInVideoFile} = require("./scripts/check-is-audio-in-video-file");
 const {removeAudioFromVideo} = require("./scripts/remove-audio-from-video");
@@ -16,8 +16,9 @@ const {generateVideoFromLastFrame} = require("./scripts/generate-video-from-last
 const {addVideoToVideoMergeList} = require("./scripts/add-video-to-video-merge-list");
 const {mergeVideos} = require("./scripts/merge-videos");
 const {mergeVideoAndAudio} = require("./scripts/merge-video-and-audio");
+const {resetDistFolder} = require("./scripts/reset-dist-folder");
 
-
+resetDistFolder();
 
 async function runAudio() {
     const items = await filterMediaObjects();
@@ -119,7 +120,7 @@ async function runVideo() {
 
         // Copy video file into assets folder
         const fileName = calculation.videoPath.split('/').pop();
-        const filePath = `${ASSETS_FOLDER}/${fileName}`;
+        const filePath = `${DIST_FOLDER}/${fileName}`;
         await copyFile(calculation.videoPath, filePath);
         await addVideoToVideoMergeList(filePath);
 

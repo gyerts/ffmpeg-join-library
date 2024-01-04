@@ -1,5 +1,5 @@
 const {getArticleFilePath} = require("./get-article-file-path");
-const {DB_AUDIO} = require("./constants");
+const {DB_AUDIO} = require("../constants");
 
 function getAudioPathFromRevoicer(item) {
     // if used Revoicer for audio than use revoicer object, otherwise user record object

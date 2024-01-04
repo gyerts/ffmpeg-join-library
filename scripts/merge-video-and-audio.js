@@ -1,4 +1,4 @@
-const {FF_MPEG, MAIN_VIDEO_PATH, MAIN_AUDIO_PATH} = require("./constants");
+const {FF_MPEG, MAIN_VIDEO_PATH, MAIN_AUDIO_PATH} = require("../constants");
 const {executeCmd} = require("./execute-cmd");
 
 async function mergeVideoAndAudio() {

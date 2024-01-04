@@ -1,10 +1,10 @@
 const {getDuration} = require("./get-duration");
-const {FF_MPEG, ASSETS_FOLDER} = require("./constants");
+const {FF_MPEG, DIST_FOLDER} = require("../constants");
 const {executeCmd} = require("./execute-cmd");
 const {renameFile} = require("./rename-file");
 
 async function speedupVideo(videoPath, autoPlaybackRateSec) {
-    const tempVideoFilename = `${ASSETS_FOLDER}/temp-${videoPath.split('/').pop()}`;
+    const tempVideoFilename = `${DIST_FOLDER}/temp-${videoPath.split('/').pop()}`;
     const videoDuration = await getDuration(videoPath);
     const playbackRate = autoPlaybackRateSec / videoDuration;
     console.log(`Speed up/down video`, videoDuration, '->', autoPlaybackRateSec, `playbackRate=${playbackRate}`);
