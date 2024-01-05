@@ -16,4 +16,15 @@ function getAudioPathFromRevoicer(item) {
     }
 }
 
+function isValidRevoicer(item) {
+    try {
+        getAudioPathFromRevoicer(item);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+
 exports.getAudioPathFromRevoicer = getAudioPathFromRevoicer;
+exports.isValidRevoicer = isValidRevoicer;

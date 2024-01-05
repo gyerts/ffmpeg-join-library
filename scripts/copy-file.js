@@ -1,7 +1,8 @@
 const fs = require('fs');
+const {logIt} = require("./log");
 
 function copyFile(src, dest) {
-    console.log(`Копирование файла в ${dest}`);
+    logIt(dest, 'Копирование файла');
     return new Promise((resolve, reject) => {
         fs.copyFile(src, dest, (err) => {
             if (err) {
