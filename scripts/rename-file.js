@@ -1,7 +1,6 @@
 const fs = require('fs');
 
 function renameFile(oldPath, newPath) {
-    // console.log(`Переименование файла из ${oldPath} в ${newPath}`);
     return new Promise((resolve, reject) => {
         fs.rename(oldPath, newPath, (err) => {
             if (err) {

@@ -2,7 +2,7 @@ const {FF_MPEG} = require("../constants");
 const {executeCmd} = require("./execute-cmd");
 
 async function mergeVideos(files, name, includeAudio) {
-    console.log('Merge videos:', files);
+    console.log('Merge videos ->', files, '<- Merge videos');
     const args1 = files.map(i => `-i ${i}`)
     const args2 = files.map((i, index) => `[${index}:v]${includeAudio ? `[${index}:a]` : ''}`)
 

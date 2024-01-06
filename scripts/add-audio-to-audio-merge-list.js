@@ -5,6 +5,7 @@ const {fixAudio} = require("./fix-audio");
 const {getDuration} = require("./get-duration");
 const {getNameFromPath} = require("./get-name-from-path");
 const {getMergeAudioListPath} = require("./get-merge-audio-list-path");
+const {logIt} = require("./log");
 
 let i = 0;
 
@@ -16,17 +17,22 @@ async function addAudioToAudioMergeList(filePath, hasOwnVideo, duration, partInd
     const fileName = getNameFromPath(filePath);
 
     const beforeDuration = await getDuration(filePath);
-    const finalFilename = await fixAudio(filePath, fileName, duration);
-    const afterDuration = await getDuration(join(DIST_FOLDER, finalFilename));
     const mergeListPath = getMergeAudioListPath(partIndex);
+    let finalFilePath = filePath;
 
-    console.log('Add fixed audio', fileName, `with duration (${duration})`, beforeDuration, '->', afterDuration, 'has own video', hasOwnVideo);
+    if (!fileName.endsWith('.wav')) {
+        finalFilePath = await fixAudio(filePath, duration);
+        const afterDuration = await getDuration(finalFilePath);
+        logIt(fileName, 'Add fixed audio with duration ( before ->', duration, ')', beforeDuration, '->', afterDuration, 'has own video', hasOwnVideo);
+    } else {
+        logIt(fileName, 'Add audio with duration ( before ->', duration, ')', beforeDuration, 'has own video', hasOwnVideo);
+    }
 
     if (i === 0) {
-        const addAudioCmd = `echo "file '${finalFilename}'" > ${mergeListPath}\n`;
+        const addAudioCmd = `echo "file '${finalFilePath}'" > ${mergeListPath}\n`;
         await executeCmd(addAudioCmd);
     } else {
-        const addAudioCmd = `echo "file '${finalFilename}'" >> ${mergeListPath}\n`;
+        const addAudioCmd = `echo "file '${finalFilePath}'" >> ${mergeListPath}\n`;
         await executeCmd(addAudioCmd);
     }
     i++;

@@ -12,6 +12,7 @@ const {cutVideo} = require("./cut-video");
 const {addVideoToVideoMergeList} = require("./add-video-to-video-merge-list");
 const {generateVideoFromLastFrame} = require("./generate-video-from-last-frame");
 const {mergeVideos} = require("./merge-videos");
+const {logIt} = require("./log");
 
 
 async function runVideo(items, videoFileName) {
@@ -112,7 +113,7 @@ async function runVideo(items, videoFileName) {
 
         if (videoDuration < calculation.audioDuration) {
             const videoPath = await generateVideoFromLastFrame(filePath, calculation.audioDuration - videoDuration);
-            console.log(`[${videoPath}] Add frozen video, duration: `, await getDuration(videoPath));
+            // logIt(videoPath, 'Add frozen video, duration:', await getDuration(videoPath));
             await addVideoToVideoMergeList(videoPath, mergeList);
         }
 

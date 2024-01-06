@@ -15,7 +15,7 @@ class Settings {
 }
 
 const slugifyFile = (str) => {
-    console.log('[slugify] name before: ', decodeURI(str));
+    // console.log('[slugify] name before: ', decodeURI(str));
 
     let newName = decodeURI(str);
     const extension = str.split('.').pop();
@@ -33,13 +33,13 @@ const slugifyFile = (str) => {
 
     newName = `${newName}.${extension}`;
 
-    console.log('[slugify] name after: ', newName);
+    // console.log('[slugify] name after: ', newName);
 
     return newName;
 };
 
 const slugify = (str) => {
-    console.log('[slugify] name before: ', str);
+    // console.log('[slugify] name before: ', str);
 
     const name = transliterate(str)
         .toLowerCase()
@@ -48,7 +48,7 @@ const slugify = (str) => {
         .replace(/[\s_-]+/g, '-')
         .replace(/^-+|-+$/g, '');
 
-    console.log('[slugify] name after: ', name);
+    // console.log('[slugify] name after: ', name);
 
     return name;
 };
