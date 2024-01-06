@@ -1,0 +1,42 @@
+{
+  "audios": [
+    {
+      "name": "/Users/gyerts/WebstormProjects/micro-services/ffmpeg/app/ffmpeg/out/artifacts/silence-4.208333.wav",
+      "duration": 4.208322,
+      "videoPath": ""
+    },
+    {
+      "name": "/Users/gyerts/WebstormProjects/micro-services/ffmpeg/app/ffmpeg/out/artifacts/fixed-revoicer-note-this-masterclass-assumes-that-you-a-1702749374013.mp3.wav",
+      "duration": 7.175986,
+      "videoPath": "/Users/gyerts/WebstormProjects/libraries/holy-editor/database-backup/uploaded-videos/angular/micro-and-macro-tasks/001.mov"
+    },
+    {
+      "name": "/Users/gyerts/WebstormProjects/micro-services/ffmpeg/app/ffmpeg/out/artifacts/silence-3.8.wav",
+      "duration": 3.8,
+      "videoPath": ""
+    },
+    {
+      "name": "/Users/gyerts/WebstormProjects/micro-services/ffmpeg/app/ffmpeg/out/artifacts/fixed-revoicer-and-also-when-you-completely-finish-watc-1704280481737.mp3.wav",
+      "duration": 7.2,
+      "videoPath": "/Users/gyerts/WebstormProjects/libraries/holy-editor/database-backup/uploaded-videos/angular/micro-and-macro-tasks/vvedenie_eng/video-test.mov"
+    }
+  ],
+  "videos": [
+    {
+      "name": "/Users/gyerts/WebstormProjects/micro-services/ffmpeg/app/ffmpeg/out/artifacts/last0000-0100.mp4",
+      "duration": 4.208333
+    },
+    {
+      "name": "/Users/gyerts/WebstormProjects/micro-services/ffmpeg/app/ffmpeg/out/artifacts/frozen-last0000-0100.mp4",
+      "duration": 3.8
+    },
+    {
+      "name": "/Users/gyerts/WebstormProjects/micro-services/ffmpeg/app/ffmpeg/out/artifacts/001.mov",
+      "duration": 7.216667
+    },
+    {
+      "name": "/Users/gyerts/WebstormProjects/micro-services/ffmpeg/app/ffmpeg/out/artifacts/fixed-video-test.mov",
+      "duration": 11.333333
+    }
+  ]
+}

@@ -6,12 +6,15 @@ const {runVideo} = require("./scripts/run-video");
 const {getParts} = require("./scripts/get-parts");
 const {DIST_FOLDER, settings} = require("./constants");
 const {mergeAllVideos} = require("./scripts/merge-all-videos");
+const {initAppLogs} = require("./scripts/init-app-logs");
 
 
-const url = 'api/articles/url?url=angular/plugins/obschaya-informatsiya-pro-plagini/zachem-nuzhni-plagini/paper-work-intro/app-zoo-1';
+const url = 'api/articles/url?url=angular/micro-and-macro-tasks/vvedenie_eng';
+// const url = 'api/articles/url?url=angular/plugins/obschaya-informatsiya-pro-plagini/zachem-nuzhni-plagini/paper-work-intro/app-zoo-1';
 
 (async () => {
     resetDistFolder();
+    initAppLogs();
 
     let parts = await getParts(url);
     const videos = [];

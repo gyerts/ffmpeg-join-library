@@ -3,14 +3,16 @@ const { Settings } = require("./scripts/settings");
 
 const cwd = process.cwd();
 
+const PATH_TO_APP_LOGS = join(cwd, 'app-logs', 'src', 'assets');
 const FF_MPEG = `${join(cwd, 'scripts', 'ffmpeg')} -y`;
 const FF_PROBE = join(cwd, 'scripts', 'ffprobe');
 const DB_PATH = '/Users/gyerts/WebstormProjects/libraries/holy-editor/database-backup';
 const DB_AUDIO = join(DB_PATH, 'uploaded-audios');
 const DB_VIDEO = join(DB_PATH, 'uploaded-videos');
 const DB_IMAGE = join(DB_PATH, 'uploaded-images');
-const OUT_FOLDER = join(cwd, 'out');
+const OUT_FOLDER = join(PATH_TO_APP_LOGS, 'out');
 const DIST_FOLDER = join(OUT_FOLDER, 'artifacts');
+const PATH_TO_APP_LOGS_FILE = join(PATH_TO_APP_LOGS, 'logs.json');
 
 console.log({
     FF_MPEG,
@@ -20,6 +22,7 @@ console.log({
     DB_VIDEO,
     OUT_FOLDER,
     DIST_FOLDER,
+    PATH_TO_APP_LOGS_FILE,
 })
 
 const resolution = '3024:1888';
@@ -42,6 +45,7 @@ exports.DB_VIDEO = DB_VIDEO;
 exports.DB_IMAGE = DB_IMAGE;
 exports.DIST_FOLDER = DIST_FOLDER;
 exports.OUT_FOLDER = OUT_FOLDER;
+exports.PATH_TO_APP_LOGS_FILE = PATH_TO_APP_LOGS_FILE;
 
 exports.mediaObjects = mediaObjects;
 exports.resolution = resolution;

@@ -1,0 +1,23 @@
+<div class="flex w-screen justify-center">
+  <div class="max-w-6xl flex">
+    <div class="w-1/2 flex flex-col gap-1 p-1">
+      @for (audio of logsService.logs.audios; track audio) {
+        <div class="w-full border flex flex-col text-center items-center justify-center p-4"
+             [ngStyle]="{ height: audio.duration * coef + 'px' }"
+             [ngClass]="{ 'bg-green-200': audio.videoPath }"
+        >
+          <span>{{ audio.name | nameOnly }}</span>
+          <b>{{ audio.videoPath | nameOnly }}</b>
+        </div>
+      }
+    </div>
+    <div class="w-1/2 flex flex-col gap-1 p-1">
+      @for (video of logsService.logs.videos; track video) {
+        <div class="w-full border flex items-center justify-center p-4"
+             [ngStyle]="{ height: video.duration * coef + 'px' }">
+          {{ video.name | nameOnly }}
+        </div>
+      }
+    </div>
+  </div>
+</div>

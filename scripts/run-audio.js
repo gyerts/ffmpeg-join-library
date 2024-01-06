@@ -21,7 +21,7 @@ async function runAudio(items, audioFileName, partIndex) {
             const duration = await getDuration(videoPath);
             const name = await generateSilenceMp3(duration);
             logIt(name, `Generate silence.mp3 for "${item.data.topic}", seconds`, duration);
-            await addAudioToAudioMergeList(name, false, duration, partIndex, i === 0);
+            await addAudioToAudioMergeList(name, '', duration, partIndex, i === 0);
             items = items.filter(i => i.componentType !== 'autoplay-audio-plus-video');
             continue;
         }
@@ -41,10 +41,10 @@ async function runAudio(items, audioFileName, partIndex) {
             if (item.data.pauseBeforePlay) {
                 logIt(audioFilePath, 'Generate silence.mp3 for seconds', item.data.pauseBeforePlay);
                 const name = await generateSilenceMp3(item.data.pauseBeforePlay);
-                await addAudioToAudioMergeList(name, false, item.data.pauseBeforePlay, partIndex, i === 0);
+                await addAudioToAudioMergeList(name, '', item.data.pauseBeforePlay, partIndex, i === 0);
             }
 
-            await addAudioToAudioMergeList(audioFilePath, !!videoObject, audioFileDuration, partIndex, i === 0);
+            await addAudioToAudioMergeList(audioFilePath, getArticleFilePath(DB_VIDEO, videoObject.data.fileUrl), audioFileDuration, partIndex, i === 0);
         }
     }
 

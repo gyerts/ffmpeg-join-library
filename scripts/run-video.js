@@ -20,15 +20,15 @@ async function runVideo(items, videoFileName) {
     const ar = [];
     let index = 0;
     const mergeList = [];
+    let autoplayAudioPlusVideoMet = false;
+    let isFirstContentVideo = true;
 
     for (let i = 0; i < items.length; i++) {
         const item = items[i];
         const nextItem = items[i+1];
         const videoObject = nextItem ? nextItem.componentType === 'video' ? nextItem : null : null;
         const isItemIsRevoicer = item.componentType === 'generate-audio-revoicer' && isValidRevoicer(item);
-        let isFirstContentVideo = true;
 
-        let autoplayAudioPlusVideoMet = false;
         let isStartUpVideo = item.componentType === 'autoplay-audio-plus-video' && !autoplayAudioPlusVideoMet;
 
         const imageObject = nextItem ? nextItem.componentType === 'image' ? nextItem : null : null;
