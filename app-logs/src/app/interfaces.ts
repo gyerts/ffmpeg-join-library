@@ -1,6 +1,7 @@
 export interface LogsDto {
   audios: AudioDto[],
   videos: VideoDto[],
+  mainVideo?: string,
 }
 
 export interface AudioDto {

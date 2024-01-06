@@ -1,4 +1,32 @@
-<div class="flex w-screen justify-center">
+@if (videoSrc || audioSrc) {
+  <div class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center cursor-pointer"
+       (click)="hide()">
+
+    @if (videoSrc && root) {
+      <video controls autoplay src="/assets/out/{{ videoSrc }}"
+             class="w-1/2"></video>
+    }
+    @if (videoSrc && !root) {
+      <video controls autoplay src="/assets/out/artifacts/{{ videoSrc }}"
+             class="w-1/2"></video>
+    }
+    @if (audioSrc) {
+      <audio controls autoplay src="/assets/out/artifacts/{{ audioSrc }}"
+             class="w-1/2"></audio>
+    }
+
+    <div class="absolute -z-10 top-0 left-0 h-screen w-screen bg-black blur-sm opacity-60">
+    </div>
+  </div>
+}
+
+
+<div class="flex flex-col w-screen items-center">
+  @if (logsService.logs.mainVideo | nameOnly; as name) {
+    <button class="text-2xl px-16 py-3 my-8 border rounded-2xl active:bg-orange-100"
+            (click)="playVideo(name, true)"
+    >PLAY</button>
+  }
   <div class="max-w-6xl flex">
     <div class="w-1/2 flex flex-col gap-1 p-1">
       @for (audio of logsService.logs.audios; track audio) {
@@ -8,14 +36,20 @@
         >
           <span>{{ audio.name | nameOnly }}</span>
           <b>{{ audio.videoPath | nameOnly }}</b>
+          @if (audio.name | nameOnly; as name) {
+            <button (click)="playAudio(name)">play</button>
+          }
         </div>
       }
     </div>
     <div class="w-1/2 flex flex-col gap-1 p-1">
       @for (video of logsService.logs.videos; track video) {
-        <div class="w-full border flex items-center justify-center p-4"
+        <div class="w-full border items-center justify-center p-4 flex flex-col"
              [ngStyle]="{ height: video.duration * coef + 'px' }">
-          {{ video.name | nameOnly }}
+          <span>{{ video.name | nameOnly }}</span>
+          @if (video.name | nameOnly; as name) {
+            <button (click)="playVideo(name)">play</button>
+          }
         </div>
       }
     </div>

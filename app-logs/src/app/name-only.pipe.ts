@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NameOnlyPipe implements PipeTransform {
 
-  transform(path: string): string {
-    return path.split('/').pop()!;
+  transform(path?: string): string {
+    return path?.split('/').pop()!;
   }
 }

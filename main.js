@@ -1,10 +1,11 @@
+const fs = require("fs");
 const {join} = require("path");
 const {mergeVideoAndAudio} = require("./scripts/merge-video-and-audio");
 const {resetDistFolder} = require("./scripts/reset-dist-folder");
 const {runAudio} = require("./scripts/run-audio");
 const {runVideo} = require("./scripts/run-video");
 const {getParts} = require("./scripts/get-parts");
-const {DIST_FOLDER, settings} = require("./constants");
+const {DIST_FOLDER, settings, PATH_TO_APP_LOGS_FILE} = require("./constants");
 const {mergeAllVideos} = require("./scripts/merge-all-videos");
 const {initAppLogs} = require("./scripts/init-app-logs");
 
@@ -35,4 +36,14 @@ const url = 'api/articles/url?url=angular/micro-and-macro-tasks/vvedenie_eng';
     }
 
     await mergeAllVideos(videos, settings.mainVideoName);
+    addMainVideo(settings.mainVideoName);
 })();
+
+function addMainVideo(name, duration) {
+    const text = fs.readFileSync(PATH_TO_APP_LOGS_FILE, { encoding: "utf8" });
+    const obj = JSON.parse(text);
+
+    obj.mainVideo = name;
+
+    fs.writeFileSync(PATH_TO_APP_LOGS_FILE, JSON.stringify(obj, null, 2));
+}

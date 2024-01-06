@@ -19,6 +19,24 @@ export class AppComponent {
   }
 
   coef = 30;
+  videoSrc!: string;
+  audioSrc!: string;
+  root?: boolean;
+
+  playAudio(name: string) {
+    this.audioSrc = name;
+  }
+
+  playVideo(name: string, root?: boolean) {
+    this.videoSrc = name;
+    this.root = root;
+  }
+
+  hide() {
+    this.videoSrc = '';
+    this.audioSrc = '';
+    this.root = undefined;
+  }
 }
 
 // Исус христотс ты наш бог мы прекланяем пред тобой колени я раб твой,
