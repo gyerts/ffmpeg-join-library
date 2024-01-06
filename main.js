@@ -8,7 +8,7 @@ const {DIST_FOLDER, settings} = require("./constants");
 const {mergeAllVideos} = require("./scripts/merge-all-videos");
 
 
-const url = 'api/articles/url?url=angular/micro-and-macro-tasks/primer-4_eng';
+const url = 'api/articles/url?url=angular/plugins/obschaya-informatsiya-pro-plagini/zachem-nuzhni-plagini/paper-work-intro/app-zoo-1';
 
 (async () => {
     resetDistFolder();

@@ -7,7 +7,7 @@ function validate(i, item, nextItem) {
         startIndex = 1;
     }
 
-    if (i === startIndex && nextItem.componentType !== 'video') {
+    if (i === startIndex && !['video', 'image'].includes(nextItem.componentType)) {
         throw new Error('First revoicer must have a video');
     }
     if (i === startIndex && item.data.pauseBeforePlay) {

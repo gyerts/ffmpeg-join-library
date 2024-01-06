@@ -1,6 +1,6 @@
 const {validate} = require("./validate");
 const {getArticleFilePath} = require("./get-article-file-path");
-const {DB_VIDEO, DIST_FOLDER, settings} = require("../constants");
+const {DB_VIDEO, DIST_FOLDER, settings, DB_IMAGE} = require("../constants");
 const {getDuration} = require("./get-duration");
 const {isValidRevoicer, getAudioPathFromRevoicer} = require("./get-audio-path-from-revoicer");
 const {getNameFromPath} = require("./get-name-from-path");
@@ -13,6 +13,7 @@ const {addVideoToVideoMergeList} = require("./add-video-to-video-merge-list");
 const {generateVideoFromLastFrame} = require("./generate-video-from-last-frame");
 const {mergeVideos} = require("./merge-videos");
 const {logIt} = require("./log");
+const {makeVideoFromSpriteImage} = require("./make-video-from-sprite-image");
 
 
 async function runVideo(items, videoFileName) {
@@ -24,10 +25,51 @@ async function runVideo(items, videoFileName) {
         const item = items[i];
         const nextItem = items[i+1];
         const videoObject = nextItem ? nextItem.componentType === 'video' ? nextItem : null : null;
+        const isItemIsRevoicer = item.componentType === 'generate-audio-revoicer' && isValidRevoicer(item);
+        let isFirstContentVideo = true;
+
+        let autoplayAudioPlusVideoMet = false;
+        let isStartUpVideo = item.componentType === 'autoplay-audio-plus-video' && !autoplayAudioPlusVideoMet;
+
+        const imageObject = nextItem ? nextItem.componentType === 'image' ? nextItem : null : null;
+        let spriteVideoPath = '';
+
+        const addVideo = (audioFileDuration) => {
+            isFirstContentVideo = false;
+            if (videoObject) {
+                ar.push({
+                    audioDuration: audioFileDuration,
+                    muteAudio: !item.data.unmuteAudio,
+                    autoPlaybackRateSec: item.data.autoPlaybackRateSec,
+                    videoPath: getArticleFilePath(DB_VIDEO, videoObject.data.fileUrl),
+                });
+            }
+            if (imageObject) {
+                ar.push({
+                    audioDuration: audioFileDuration,
+                    muteAudio: false,
+                    autoPlaybackRateSec: 0,
+                    videoPath: spriteVideoPath,
+                });
+            }
+        }
+
 
         validate(i, item, nextItem);
 
-        if (i === 0 && item.componentType === 'autoplay-audio-plus-video') {
+
+        if (imageObject) {
+            const spritePath = getArticleFilePath(DB_IMAGE, imageObject.data.fileUrl);
+            spriteVideoPath = await makeVideoFromSpriteImage(
+                spritePath,
+                +imageObject.data.options.cols,
+                +imageObject.data.options.frames
+            );
+        }
+
+        if (isStartUpVideo) {
+            autoplayAudioPlusVideoMet = true;
+
             const videoPath = getArticleFilePath(DB_VIDEO, item.data.videoSrc);
             const duration = await getDuration(videoPath);
             ar.push({
@@ -39,43 +81,32 @@ async function runVideo(items, videoFileName) {
             settings.setMainVideoName(`${item.data.topic}.mp4`);
             items = items.filter(i => i.componentType !== 'autoplay-audio-plus-video');
             continue;
-        } else if (i === 0) {
-            const {
-                fileUrl: audioFilePath,
-                duration: audioFileDuration,
-            } = getAudioPathFromRevoicer(item);
-
-            ar.push({
-                audioDuration: audioFileDuration,
-                muteAudio: !item.data.unmuteAudio,
-                autoPlaybackRateSec: item.data.autoPlaybackRateSec,
-                videoPath: getArticleFilePath(DB_VIDEO, videoObject.data.fileUrl),
-            });
-            continue;
         }
 
-        if (item.componentType === 'generate-audio-revoicer' && isValidRevoicer(item)) {
+        if (isItemIsRevoicer) {
             const {
                 fileUrl: audioFilePath,
                 duration: audioFileDuration,
             } = getAudioPathFromRevoicer(item);
 
-            if (!videoObject) {
-                ar[index].audioDuration += item.data.pauseBeforePlay || 0;
-                ar[index].audioDuration += audioFileDuration;
-                continue;
+            if (isFirstContentVideo) {
+                addVideo(audioFileDuration);
             } else {
                 ar[index].audioDuration += item.data.pauseBeforePlay || 0;
-                ar[index].audioDuration += item.data.pauseBeforePlayVideo || 0;
-            }
 
-            index++;
-            ar.push({
-                audioDuration: audioFileDuration,
-                muteAudio: !item.data.unmuteAudio,
-                autoPlaybackRateSec: item.data.autoPlaybackRateSec,
-                videoPath: getArticleFilePath(DB_VIDEO, videoObject.data.fileUrl),
-            });
+                if (!videoObject && !imageObject) {
+                    // Если далее нет ни видео ни картинки, это значит что это простой аудио файл
+                    // просто нужно добавить длину этого аудио, и перейти на следующую итерацию.
+                    ar[index].audioDuration += audioFileDuration;
+                } else {
+                    // если все же есть у этого объекта видео или картинка, то это означает что,
+                    // во-первых, это следующий фрагмент, потому увеличиваем индекс,
+                    // во-вторых, предыдущему индексу также нужно добавить значение задержки видео.
+                    index++;
+                    ar[index-1].audioDuration += item.data.pauseBeforePlayVideo || 0;
+                    addVideo(audioFileDuration);
+                }
+            }
         }
     }
 
