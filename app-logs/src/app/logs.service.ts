@@ -9,6 +9,7 @@ export class LogsService {
     audios: [],
     videos: [],
     mainVideo: '',
+    loading: '',
   };
 
   constructor() {

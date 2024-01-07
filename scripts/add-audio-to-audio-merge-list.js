@@ -1,11 +1,10 @@
-const fs = require('fs');
-const {PATH_TO_APP_LOGS_FILE} = require("../constants");
 const {executeCmd} = require("./execute-cmd");
 const {fixAudio} = require("./fix-audio");
 const {getDuration} = require("./get-duration");
 const {getNameFromPath} = require("./get-name-from-path");
 const {getMergeAudioListPath} = require("./get-merge-audio-list-path");
 const {logIt} = require("./log");
+const {addAudioToFrontendLogs} = require("./debugger");
 
 let i = 0;
 
@@ -41,12 +40,3 @@ async function addAudioToAudioMergeList(filePath, videoPath, duration, partIndex
 }
 
 exports.addAudioToAudioMergeList = addAudioToAudioMergeList;
-
-function addAudioToFrontendLogs(name, duration, videoPath) {
-    const text = fs.readFileSync(PATH_TO_APP_LOGS_FILE, { encoding: "utf8" });
-    const obj = JSON.parse(text);
-
-    obj.audios.push({ name, duration, videoPath });
-
-    fs.writeFileSync(PATH_TO_APP_LOGS_FILE, JSON.stringify(obj, null, 2));
-}

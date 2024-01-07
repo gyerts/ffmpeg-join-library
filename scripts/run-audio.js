@@ -13,6 +13,7 @@ async function runAudio(items, audioFileName, partIndex) {
         const item = items[i];
         const nextItem = items[i+1];
         const videoObject = nextItem ? nextItem.componentType === 'video' ? nextItem : null : null;
+        const imageObject = nextItem ? nextItem.componentType === 'image' ? nextItem : null : null;
 
         validate(i, item, nextItem);
 
@@ -22,7 +23,7 @@ async function runAudio(items, audioFileName, partIndex) {
             const name = await generateSilenceMp3(duration);
             logIt(name, `Generate silence.mp3 for "${item.data.topic}", seconds`, duration);
             await addAudioToAudioMergeList(name, '', duration, partIndex, i === 0);
-            items = items.filter(i => i.componentType !== 'autoplay-audio-plus-video');
+            // items = items.filter(i => i.componentType !== 'autoplay-audio-plus-video');
             continue;
         }
 
@@ -44,7 +45,15 @@ async function runAudio(items, audioFileName, partIndex) {
                 await addAudioToAudioMergeList(name, '', item.data.pauseBeforePlay, partIndex, i === 0);
             }
 
-            await addAudioToAudioMergeList(audioFilePath, getArticleFilePath(DB_VIDEO, videoObject.data.fileUrl), audioFileDuration, partIndex, i === 0);
+            let mediaPath = '';
+            if (videoObject) {
+                mediaPath = getArticleFilePath(DB_VIDEO, videoObject.data.fileUrl)
+            }
+            if (imageObject) {
+                mediaPath = getArticleFilePath(DB_VIDEO, imageObject.data.fileUrl)
+            }
+
+            await addAudioToAudioMergeList(audioFilePath, mediaPath, audioFileDuration, partIndex, i === 0);
         }
     }
 

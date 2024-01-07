@@ -8,6 +8,7 @@ const {generateVideoFromLastFrame} = require("./generate-video-from-last-frame")
 const {logIt} = require("./log");
 const {mergeAllVideos} = require("./merge-all-videos");
 const {getNameFromPath} = require("./get-name-from-path");
+const {addAudioToFrontendLogs, addVideoToFrontendLogs} = require("./debugger");
 
 async function mergeVideoAndAudio(videoFilePath, audioFilePath, mainVideoPath) {
     console.log("Merge Video And Audio");
@@ -18,6 +19,10 @@ async function mergeVideoAndAudio(videoFilePath, audioFilePath, mainVideoPath) {
     if (audioDuration < videoDuration && (videoDuration - audioDuration > 0.1)) {
         logIt(audioFilePath, 'Make audio longer', audioDuration, '->', videoDuration);
         const silenceFilePath = await generateSilenceMp3(videoDuration - audioDuration);
+
+        const silenceDuration = await getDuration(silenceFilePath);
+        addAudioToFrontendLogs(silenceFilePath, silenceDuration, '');
+
         const tempAudioPath = join(DIST_FOLDER, 'temp.mp3');
         await executeCmd(
             `${FF_MPEG} -i ${audioFilePath} -i ${silenceFilePath} -filter_complex "[0:a][1:a]concat=n=2:v=0:a=1" ${tempAudioPath}`
@@ -29,6 +34,9 @@ async function mergeVideoAndAudio(videoFilePath, audioFilePath, mainVideoPath) {
         logIt(audioFilePath, 'Make video longer', videoDuration, '->', audioDuration);
         const frozenVideoPath = await generateVideoFromLastFrame(videoFilePath, audioDuration - videoDuration);
         const tempMainVideoPath = join(DIST_FOLDER, `temp-${getNameFromPath(videoFilePath)}`);
+
+        const frozenDuration = await getDuration(frozenVideoPath);
+        addVideoToFrontendLogs(frozenVideoPath, frozenDuration);
 
         await mergeAllVideos([
             videoFilePath,

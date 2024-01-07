@@ -78,8 +78,9 @@ async function runVideo(items, videoFileName) {
                 autoPlaybackRateSec: 0,
                 videoPath,
             });
+            index++;
             settings.setMainVideoName(`${item.data.topic}.mp4`);
-            items = items.filter(i => i.componentType !== 'autoplay-audio-plus-video');
+            // items = items.filter(i => i.componentType !== 'autoplay-audio-plus-video');
             continue;
         }
 
@@ -103,7 +104,7 @@ async function runVideo(items, videoFileName) {
                     // во-первых, это следующий фрагмент, потому увеличиваем индекс,
                     // во-вторых, предыдущему индексу также нужно добавить значение задержки видео.
                     index++;
-                    ar[index-1].audioDuration += item.data.pauseBeforePlayVideo || 0;
+                    // ar[index-1].audioDuration += item.data.pauseBeforePlayVideo || 0;
                     addVideo(audioFileDuration);
                 }
             }
@@ -138,12 +139,14 @@ async function runVideo(items, videoFileName) {
         const lastIteration = i === ar.length - 1;
 
         if (videoDuration > calculation.audioDuration && !lastIteration) {
-            await cutVideo(filePath, videoDuration, videoDuration - (videoDuration - calculation.audioDuration));
+            const afterCutDuration = videoDuration - (videoDuration - calculation.audioDuration);
+            await cutVideo(filePath, videoDuration, afterCutDuration);
         }
         await addVideoToVideoMergeList(filePath, mergeList);
 
         if (videoDuration < calculation.audioDuration) {
-            const videoPath = await generateVideoFromLastFrame(filePath, calculation.audioDuration - videoDuration);
+            const freezeDuration = calculation.audioDuration - videoDuration;
+            const videoPath = await generateVideoFromLastFrame(filePath, freezeDuration);
             // logIt(videoPath, 'Add frozen video, duration:', await getDuration(videoPath));
             await addVideoToVideoMergeList(videoPath, mergeList);
         }

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { LogsService } from "./logs.service";
 import { NameOnlyPipe } from "./name-only.pipe";
+import { SafeHtmlPipe } from "./safe-html.pipe";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NameOnlyPipe],
+  imports: [CommonModule, RouterOutlet, NameOnlyPipe, SafeHtmlPipe],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
