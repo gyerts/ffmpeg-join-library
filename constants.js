@@ -3,7 +3,7 @@ const { Settings } = require("./scripts/settings");
 
 const cwd = process.cwd();
 
-const PATH_TO_APP_LOGS = join(cwd, 'app-logs', 'src', 'assets');
+const PATH_TO_APP_LOGS = join(cwd, 'app-logs', 'dist', 'app-logs', 'browser', 'assets');
 const FF_MPEG = `${join(cwd, 'scripts', 'ffmpeg')} -y`;
 const FF_PROBE = join(cwd, 'scripts', 'ffprobe');
 const DB_PATH = '/Users/gyerts/WebstormProjects/libraries/holy-editor/database-backup';
