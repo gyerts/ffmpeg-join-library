@@ -6,6 +6,7 @@
     "start": "ng serve --port 4202",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "serve:prod": "http-server -c-1 dist/app-logs/browser",
     "test": "ng test"
   },
   "private": true,

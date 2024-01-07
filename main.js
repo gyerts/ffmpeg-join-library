@@ -10,7 +10,8 @@ const {initAppLogs} = require("./scripts/init-app-logs");
 const {addMainVideo} = require("./scripts/debugger");
 
 
-const url = 'api/articles/url?url=angular/micro-and-macro-tasks/zavershenie';
+// const url = 'api/articles/url?url=angular/micro-and-macro-tasks/zavershenie';
+const url = 'api/articles/url?url=angular/micro-and-macro-tasks/micro-and-macro-tasks-eng-version';
 // const url = 'api/articles/url?url=angular/plugins/obschaya-informatsiya-pro-plagini/zachem-nuzhni-plagini/paper-work-intro/app-zoo-1';
 
 (async () => {
